@@ -16,8 +16,8 @@ class DuplicateFinder
     end
 
     directory = @arguments_parser.options[:directory]
-    @file_iterator.foreach_file(directory) do |file|
-      @duplicate_candidates_tracker.add(file)
+    @file_iterator.foreach_file(directory) do |path|
+      @duplicate_candidates_tracker.add(path)
     end
   end
 end
