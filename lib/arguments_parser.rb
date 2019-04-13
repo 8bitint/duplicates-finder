@@ -1,6 +1,7 @@
 require 'optparse'
 
 class ArgumentsParser
+  attr_reader :error, :options
 
   def initialize(args)
     @error = nil
@@ -9,14 +10,6 @@ class ArgumentsParser
         valid: true
     }
     parse(args)
-  end
-
-  def error
-    @error
-  end
-
-  def options
-    @options
   end
 
   private
