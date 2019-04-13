@@ -27,8 +27,10 @@ class ArgumentsParser
       parser.on('-h', '--help', 'Show this help message') do
         @error = parser.to_s
       end
-      parser.on('-dDIRECTORY', '--directory=DIRECTORY', String, 'Directory to scan')
-      parser.parse!(args, into: @options)
+      parser.on('-dDIRECTORY', '--directory=DIRECTORY', String, 'Directory to scan') do |value|
+        @options[:directory] = value
+      end
+      parser.parse!(args)
     end
   rescue OptionParser::ParseError => e
     @error = e.to_s
