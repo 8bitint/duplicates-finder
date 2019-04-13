@@ -15,9 +15,6 @@ RSpec.describe FileIterator do
 
   it 'yields for each file that not a directory' do
     expect(Dir).to receive(:glob).and_return(@paths)
-    expect(File).to receive(:expand_path).with(@file_path1).and_return(@file_path1)
-    expect(File).to receive(:expand_path).with(@file_path2).and_return(@file_path2)
-    expect(File).to receive(:expand_path).with(@file_path3).and_return(@file_path3)
     expect(FileTest).to receive(:file?).with(@file_path1).and_return(true)
     expect(FileTest).to receive(:file?).with(@file_path2).and_return(true)
     expect(FileTest).to receive(:file?).with(@file_path3).and_return(true)

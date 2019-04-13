@@ -1,12 +1,14 @@
 require_relative 'arguments_parser.rb'
 require_relative 'file_iterator.rb'
+require 'digest'
 
 class DuplicateFinder
 
-  def initialize(arguments_parser, file_iterator, duplicate_candidates_tracker)
+  def initialize(arguments_parser, file_iterator, candidates_by_filesize_resolver, duplicates_by_content_resolver)
     @arguments_parser = arguments_parser
     @file_iterator = file_iterator
-    @duplicate_candidates_tracker = duplicate_candidates_tracker
+    @candidates_by_filesize_resolver = candidates_by_filesize_resolver
+    @duplicates_by_content_resolver = duplicates_by_content_resolver
   end
 
   def run
@@ -17,7 +19,13 @@ class DuplicateFinder
 
     directory = @arguments_parser.options[:directory]
     @file_iterator.foreach_file(directory) do |path|
-      @duplicate_candidates_tracker.add(path)
+      @candidates_by_filesize_resolver.add(path)
+    end
+
+    @candidates_by_filesize_resolver.candiate_group_with_2_duplicates.each do |group|
+      @duplicates_by_content_resolver.resolve(group).each do |_duplicates|
+        # ignore
+      end
     end
   end
 end

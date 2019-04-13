@@ -5,5 +5,6 @@ end
 
 arguments_parser = ArgumentsParser.new(ARGV)
 file_iterator = FileIterator.new
-duplicate_candidates_tracker = DuplicateCandidatesTracker.new
-DuplicateFinder.new(arguments_parser, file_iterator, duplicate_candidates_tracker).run
+candidates_by_filesize_resolver = CandidatesByFilesizeResolver.new
+duplicates_by_content_resolver = DuplicatesByContentResolver.new
+DuplicateFinder.new(arguments_parser, file_iterator, candidates_by_filesize_resolver, duplicates_by_content_resolver).run

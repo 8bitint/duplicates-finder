@@ -7,7 +7,7 @@ class FileIterator
     Dir.chdir(base_directory)
     Dir.glob('**/*').each do |path|
       if FileTest.file?(path)
-        yield FileInfo.new(File.expand_path(path), FileTest.size(path))
+        yield FileInfo.new(path, FileTest.size(path))
       end
     end
   end

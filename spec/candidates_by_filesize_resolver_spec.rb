@@ -1,6 +1,6 @@
-require 'duplicate_candidates_tracker.rb'
+require 'candidates_by_filesize_resolver.rb'
 
-RSpec.describe DuplicateCandidatesTracker do
+RSpec.describe CandidatesByFilesizeResolver do
 
   before(:each) do
     file1 = double('File', size: 123)
@@ -10,20 +10,17 @@ RSpec.describe DuplicateCandidatesTracker do
     file5 = double('File', size: 123)
     file6 = double('File', size: 123)
 
-    @expected_candidates = {
-      123 => [file1, file5, file6],
-      456 => [file2, file4]
-    }
+    @expected_candidates = [[file1, file5, file6], [file2, file4]]
 
-    @duplicate_candidates_tracker = DuplicateCandidatesTracker.new
+    @candidates_by_filesize_resolver = CandidatesByFilesizeResolver.new
     [file1, file2, file3, file4, file5, file6].each do |file|
-      @duplicate_candidates_tracker.add(file)
+      @candidates_by_filesize_resolver.add(file)
     end
   end
 
   context 'given a list of files' do
     it 'considers only those files with identical sizes as possible duplications' do
-      expect(@duplicate_candidates_tracker.candidates).to eq(@expected_candidates)
+      expect(@candidates_by_filesize_resolver.candidate_groups).to eq(@expected_candidates)
     end
   end
 end
