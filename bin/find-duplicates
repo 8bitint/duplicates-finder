@@ -4,4 +4,6 @@ Dir[File.join('.', 'lib/*.rb')].each do |f|
 end
 
 arguments_parser = ArgumentsParser.new(ARGV)
-DuplicateFinder.new(arguments_parser).run
+file_iterator = FileIterator.new
+duplicate_candidates_tracker = DuplicateCandidatesTracker.new
+DuplicateFinder.new(arguments_parser, file_iterator, duplicate_candidates_tracker).run
