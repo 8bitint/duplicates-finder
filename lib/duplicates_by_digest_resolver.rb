@@ -1,4 +1,4 @@
-class DuplicatesByContentResolver
+class DuplicatesByDigestResolver
 
   def resolve(candidate_group)
     duplicates_by_digest = group_by_digest(candidate_group).reject do |_, values|
@@ -8,14 +8,6 @@ class DuplicatesByContentResolver
   end
 
   private
-
-  def convert_to_groups(duplicates_by_digest)
-    duplicate_groups = []
-    duplicates_by_digest.each_value do |value|
-      duplicate_groups.push(value)
-    end
-    duplicate_groups
-  end
 
   def group_by_digest(candidate_group)
     digest_to_file_info = {}
@@ -27,6 +19,15 @@ class DuplicatesByContentResolver
     end
 
     digest_to_file_info
+  end
+
+  def convert_to_groups(duplicates_by_digest)
+    duplicate_groups = []
+    duplicates_by_digest.each_value do |value|
+      duplicate_groups.push(value)
+    end
+
+    duplicate_groups
   end
 
 end

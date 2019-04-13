@@ -3,12 +3,12 @@ require 'candidates_by_filesize_resolver.rb'
 RSpec.describe CandidatesByFilesizeResolver do
 
   before(:each) do
-    file1 = double('File', size: 123)
-    file2 = double('File', size: 456)
-    file3 = double('File', size: 789)
-    file4 = double('File', size: 456)
-    file5 = double('File', size: 123)
-    file6 = double('File', size: 123)
+    file1 = instance_double('File', size: 123)
+    file2 = instance_double('File', size: 456)
+    file3 = instance_double('File', size: 789)
+    file4 = instance_double('File', size: 456)
+    file5 = instance_double('File', size: 123)
+    file6 = instance_double('File', size: 123)
 
     @expected_candidates = [[file1, file5, file6], [file2, file4]]
 

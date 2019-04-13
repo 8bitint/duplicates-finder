@@ -4,7 +4,17 @@ Dir[File.join('.', 'lib/*.rb')].each do |f|
 end
 
 arguments_parser = ArgumentsParser.new(ARGV)
+unless arguments_parser.error.nil?
+  puts arguments_parser.error
+  exit 1
+end
+
 file_iterator = FileIterator.new
 candidates_by_filesize_resolver = CandidatesByFilesizeResolver.new
-duplicates_by_content_resolver = DuplicatesByContentResolver.new
-DuplicateFinder.new(arguments_parser, file_iterator, candidates_by_filesize_resolver, duplicates_by_content_resolver).run
+duplicates_by_content_resolver = DuplicatesByDigestResolver.new
+duplicates_printer = DuplicatesPrinter.new
+duplicate_finder = DuplicatesFinder.new(arguments_parser.options, file_iterator, candidates_by_filesize_resolver, duplicates_by_content_resolver)
+
+duplicate_finder.find.each do |group|
+  duplicates_printer.print(group)
+end
