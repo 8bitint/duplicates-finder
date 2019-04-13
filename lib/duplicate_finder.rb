@@ -22,7 +22,7 @@ class DuplicateFinder
       @candidates_by_filesize_resolver.add(path)
     end
 
-    @candidates_by_filesize_resolver.candiate_group_with_2_duplicates.each do |group|
+    @candidates_by_filesize_resolver.candidate_groups.each do |group|
       @duplicates_by_content_resolver.resolve(group).each do |_duplicates|
         # ignore
       end

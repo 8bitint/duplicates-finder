@@ -12,7 +12,7 @@ RSpec.describe DuplicateFinder do
     allow(@arguments_parser).to receive(:error).and_return(nil)
     allow(@file_iterator).to receive(:foreach_file)
     allow(@arguments_parser).to receive(:options).and_return({ directory: 'DIRECTORY' })
-    allow(@candidates_by_filesize_resolver).to receive(:candiate_group_with_2_duplicates).and_return([])
+    allow(@candidates_by_filesize_resolver).to receive(:candidate_groups).and_return([])
   end
 
   it 'stops and offers help when command line parsing fails' do
