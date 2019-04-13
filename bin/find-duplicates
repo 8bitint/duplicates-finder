@@ -1,7 +1,7 @@
-#!/usr/bin/env ruby 
-Dir[File.join(".", "lib/*.rb")].each do |f|
+#!/usr/bin/env ruby
+Dir[File.join('.', 'lib/*.rb')].each do |f|
   require f
 end
 
-Skeleton.new.run()
-
+arguments_parser = ArgumentsParser.new(ARGV)
+DuplicateFinder.new(arguments_parser).run
