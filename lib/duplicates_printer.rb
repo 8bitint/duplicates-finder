@@ -1,9 +1,9 @@
 class DuplicatesPrinter
 
-  def print(duplicates)
+  def print(duplicates_group)
     puts 'Duplicates:'
 
-    duplicates.each do |fileinfo|
+    duplicates_group.files.each do |fileinfo|
       puts "\t#{fileinfo.path}"
     end
     puts

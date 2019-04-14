@@ -11,9 +11,7 @@ class FileInfo
   end
 
   def digest
-    if @digest.nil?
-      @digest = Digest::MD5.file(@path)
-    end
+    @digest = Digest::MD5.file(@path) if @digest.nil?
     @digest
   end
 

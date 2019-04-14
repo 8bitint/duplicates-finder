@@ -11,9 +11,9 @@ end
 
 file_iterator = FileIterator.new
 duplicate_file_candidates = DuplicateFileCandidates.new
-duplicates_by_content_resolver = DuplicatesByDigestResolver.new
+duplicates_resolver = DuplicatesResolver.new
 duplicates_printer = DuplicatesPrinter.new
-duplicate_finder = DuplicatesFinder.new(arguments_parser.options, file_iterator, duplicate_file_candidates, duplicates_by_content_resolver)
+duplicate_finder = DuplicatesFinder.new(arguments_parser.options, file_iterator, duplicate_file_candidates, duplicates_resolver)
 
 duplicate_finder.find.each do |group|
   duplicates_printer.print(group)

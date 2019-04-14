@@ -4,13 +4,14 @@ require 'digest'
 
 class DuplicatesFinder
 
-  def initialize(options, file_iterator, duplicate_file_candidates, duplicates_by_digest_resolver)
+  def initialize(options, file_iterator, duplicate_file_candidates, duplicates_resolver)
     @options = options
     @file_iterator = file_iterator
     @duplicate_file_candidates = duplicate_file_candidates
-    @duplicates_by_digest_resolver = duplicates_by_digest_resolver
+    @duplicates_resolver = duplicates_resolver
   end
 
+  # @return array of confirmed candidate groups
   def find
     @file_iterator.foreach_file(@options[:directory]) do |fileinfo|
       @duplicate_file_candidates.add(fileinfo)
@@ -18,9 +19,8 @@ class DuplicatesFinder
 
     duplicates_groups = []
     @duplicate_file_candidates.candidates.each do |group|
-      duplicates = @duplicates_by_digest_resolver.resolve(group)
-      duplicates_groups.push(duplicates.flatten) unless duplicates.empty?
+      duplicates_groups.push(@duplicates_resolver.resolve(group))
     end
-    duplicates_groups
+    duplicates_groups.flatten
   end
 end

@@ -5,8 +5,8 @@ class FileGroup
     @files = []
   end
 
-  def add(fileinfo)
-    @files.push(fileinfo)
+  def add(file_info)
+    @files.push(file_info)
   end
 
   def size
@@ -17,9 +17,9 @@ class FileGroup
     @files == other.files
   end
 
-  def self.of(fileinfos)
+  def self.of(file_info_arr)
     file_group = FileGroup.new
-    fileinfos.each {|f| file_group.add(f)}
+    file_info_arr.each { |f| file_group.add(f) }
     file_group
   end
 end

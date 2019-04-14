@@ -12,9 +12,8 @@ class DuplicateFileCandidates
     @duplicate_candidate_groups[fileinfo.size] = candidate_group
   end
 
+  # @return array of file groups
   def candidates
-    @duplicate_candidate_groups.select do |_key, group|
-      group.size > 1
-    end.values
+    @duplicate_candidate_groups.select { |_key, group| group.size > 1 }.values
   end
 end
