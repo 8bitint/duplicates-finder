@@ -1,22 +1,13 @@
 class DuplicatesResolver
 
-  # @return array of confirmed candidate groups
-  def resolve(candidate_group)
-    group_by_digest(candidate_group)
-        .select {|_key, values| values.size > 1}
-        .values
+  def initialize(content_resolver_strategy, digest_resolver_strategy)
+    @content_resolver_strategy = content_resolver_strategy
+    @digest_resolver_strategy = digest_resolver_strategy
   end
 
-  def group_by_digest(candidate_group)
-    new_groups = {}
-
-    candidate_group.files.each do |file_info|
-      group = new_groups.fetch(file_info.digest.to_s, FileGroup.new)
-      group.add(file_info)
-      new_groups[file_info.digest.to_s] = group
-    end
-
-    new_groups
+  # @return array of confirmed candidate groups
+  def resolve(candidate_group)
+    candidate_group.size == 2 ? @content_resolver_strategy.resolve(candidate_group) : @digest_resolver_strategy.resolve(candidate_group)
   end
 
 end

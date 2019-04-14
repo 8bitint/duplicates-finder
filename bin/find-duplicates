@@ -11,7 +11,9 @@ end
 
 file_iterator = FileIterator.new
 duplicate_file_candidates = DuplicateFileCandidates.new
-duplicates_resolver = DuplicatesResolver.new
+content_duplication_resolver_strategy = ContentDuplicationResolverStrategy.new
+digest_duplication_resolver_strategy = DigestDuplicationResolverStrategy.new
+duplicates_resolver = DuplicatesResolver.new(content_duplication_resolver_strategy, digest_duplication_resolver_strategy)
 duplicates_printer = DuplicatesPrinter.new
 duplicate_finder = DuplicatesFinder.new(arguments_parser.options, file_iterator, duplicate_file_candidates, duplicates_resolver)
 

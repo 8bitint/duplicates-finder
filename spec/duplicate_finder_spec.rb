@@ -16,10 +16,10 @@ RSpec.describe DuplicatesFinder do
   it 'orchestrates identification of candidates and duplicates' do
     file_to_track = 'not a real file'
 
-    file1 = instance_double('FileInfo', digest: 'file1-digest')
-    file2 = instance_double('FileInfo', digest: 'file2-digest')
-    file3 = instance_double('FileInfo', digest: 'file3-digest')
-    file4 = instance_double('FileInfo', digest: 'file4-digest')
+    file1 = instance_double('FileInfo')
+    file2 = instance_double('FileInfo')
+    file3 = instance_double('FileInfo')
+    file4 = instance_double('FileInfo')
     not_duplicates_group = FileGroup.of([file1, file2])
     duplicates_group = FileGroup.of([file3, file4])
 
