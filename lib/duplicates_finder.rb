@@ -1,6 +1,6 @@
-require_relative 'arguments_parser.rb'
-require_relative 'file_iterator.rb'
 require 'digest'
+require_relative 'arguments_parser'
+require_relative 'file_iterator'
 
 class DuplicatesFinder
 

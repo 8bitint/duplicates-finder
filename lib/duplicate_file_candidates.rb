@@ -1,4 +1,4 @@
-require_relative 'file_group.rb'
+require_relative 'file_group'
 
 class DuplicateFileCandidates
 

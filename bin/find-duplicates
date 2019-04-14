@@ -1,7 +1,12 @@
 #!/usr/bin/env ruby
-Dir[File.join('.', 'lib/*.rb')].each do |f|
-  require f
-end
+require_relative '../lib/arguments_parser'
+require_relative '../lib/content_duplication_resolver_strategy'
+require_relative '../lib/digest_duplication_resolver_strategy'
+require_relative '../lib/duplicate_file_candidates'
+require_relative '../lib/duplicates_finder'
+require_relative '../lib/duplicates_printer'
+require_relative '../lib/duplicates_resolver'
+require_relative '../lib/file_iterator'
 
 arguments_parser = ArgumentsParser.new(ARGV)
 unless arguments_parser.error.nil?
