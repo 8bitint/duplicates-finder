@@ -10,10 +10,10 @@ unless arguments_parser.error.nil?
 end
 
 file_iterator = FileIterator.new
-candidates_by_filesize_resolver = CandidatesByFilesizeResolver.new
+duplicate_file_candidates = DuplicateFileCandidates.new
 duplicates_by_content_resolver = DuplicatesByDigestResolver.new
 duplicates_printer = DuplicatesPrinter.new
-duplicate_finder = DuplicatesFinder.new(arguments_parser.options, file_iterator, candidates_by_filesize_resolver, duplicates_by_content_resolver)
+duplicate_finder = DuplicatesFinder.new(arguments_parser.options, file_iterator, duplicate_file_candidates, duplicates_by_content_resolver)
 
 duplicate_finder.find.each do |group|
   duplicates_printer.print(group)

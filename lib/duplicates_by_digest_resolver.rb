@@ -12,7 +12,7 @@ class DuplicatesByDigestResolver
   def group_by_digest(candidate_group)
     digest_to_file_info = {}
 
-    candidate_group.each do |file_info|
+    candidate_group.files.each do |file_info|
       files_with_this_digest = digest_to_file_info.fetch(file_info.digest.to_s, [])
       files_with_this_digest.push(file_info)
       digest_to_file_info[file_info.digest.to_s] = files_with_this_digest

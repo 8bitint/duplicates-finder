@@ -1,4 +1,5 @@
 require 'duplicates_by_digest_resolver.rb'
+require 'file_group.rb'
 
 RSpec.describe DuplicatesByDigestResolver do
 
@@ -14,17 +15,17 @@ RSpec.describe DuplicatesByDigestResolver do
   end
 
   it 'removes false positives based on file size' do
-    expect(@duplicates_by_digest_resolver.resolve([@file1, @file4, @file5]))
-      .to eq([[@file4, @file5]])
+    file_group = FileGroup.of([@file1, @file4, @file5])
+    expect(@duplicates_by_digest_resolver.resolve(file_group)).to eq([[@file4, @file5]])
   end
 
   it 'separates files of same size based on content' do
-    expect(@duplicates_by_digest_resolver.resolve([@file1, @file4, @file5, @file6]))
-      .to eq([[@file1, @file6], [@file4, @file5]])
+    file_group = FileGroup.of([@file1, @file4, @file5, @file6])
+    expect(@duplicates_by_digest_resolver.resolve(file_group)).to eq([[@file1, @file6], [@file4, @file5]])
   end
 
   it 'filters candidate groups when files have different content' do
-    expect(@duplicates_by_digest_resolver.resolve([@file2, @file3]))
-        .to eq([])
+    file_group = FileGroup.of([@file2, @file3])
+    expect(@duplicates_by_digest_resolver.resolve(file_group)).to eq([])
   end
 end
