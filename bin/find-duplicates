@@ -9,17 +9,17 @@ require_relative '../lib/duplicates_resolver'
 require_relative '../lib/file_iterator'
 
 arguments_parser = ArgumentsParser.new(ARGV)
-unless arguments_parser.error.nil?
-  puts arguments_parser.error
+if arguments_parser.has_error?
+  puts arguments_parser.user_hint
   exit 1
 end
 
 file_iterator = FileIterator.new(arguments_parser.options[:directory])
-duplicate_file_candidates = DuplicateFileCandidates.new
 duplicates_resolver = DuplicatesResolver.new(ContentDuplicationResolverStrategy.new, DigestDuplicationResolverStrategy.new)
-duplicates_printer = DuplicatesPrinter.new
+duplicate_file_candidates = DuplicateFileCandidates.new
 duplicate_finder = DuplicatesFinder.new(file_iterator, duplicate_file_candidates, duplicates_resolver)
 
+duplicates_printer = DuplicatesPrinter.new
 duplicate_finder.find.each do |group|
   duplicates_printer.print(group)
 end

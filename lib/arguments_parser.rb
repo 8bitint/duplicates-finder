@@ -1,15 +1,18 @@
 require 'optparse'
 
 class ArgumentsParser
-  attr_reader :error, :options
+  attr_reader :options, :user_hint
 
   def initialize(args)
-    @error = nil
+    @user_hint = nil
     @options = {
-        directory: '.',
-        valid: true
+        directory: '.'
     }
     parse(args)
+  end
+
+  def has_error?
+    !@user_hint.nil?
   end
 
   private
@@ -18,7 +21,7 @@ class ArgumentsParser
     OptionParser.new do |parser|
       parser.banner = "Usage: #{File.basename $PROGRAM_NAME} [options]"
       parser.on('-h', '--help', 'Show this help message') do
-        @error = parser.to_s
+        @user_hint = parser.to_s
       end
       parser.on('-dDIRECTORY', '--directory=DIRECTORY', String, 'Directory to scan') do |value|
         @options[:directory] = value
@@ -26,7 +29,7 @@ class ArgumentsParser
       parser.parse!(args)
     end
   rescue OptionParser::ParseError => e
-    @error = e.to_s
+    @user_hint = e.to_s
   end
 
 end
