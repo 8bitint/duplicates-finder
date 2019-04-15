@@ -14,13 +14,11 @@ unless arguments_parser.error.nil?
   exit 1
 end
 
-file_iterator = FileIterator.new
+file_iterator = FileIterator.new(arguments_parser.options[:directory])
 duplicate_file_candidates = DuplicateFileCandidates.new
-content_duplication_resolver_strategy = ContentDuplicationResolverStrategy.new
-digest_duplication_resolver_strategy = DigestDuplicationResolverStrategy.new
-duplicates_resolver = DuplicatesResolver.new(content_duplication_resolver_strategy, digest_duplication_resolver_strategy)
+duplicates_resolver = DuplicatesResolver.new(ContentDuplicationResolverStrategy.new, DigestDuplicationResolverStrategy.new)
 duplicates_printer = DuplicatesPrinter.new
-duplicate_finder = DuplicatesFinder.new(arguments_parser.options, file_iterator, duplicate_file_candidates, duplicates_resolver)
+duplicate_finder = DuplicatesFinder.new(file_iterator, duplicate_file_candidates, duplicates_resolver)
 
 duplicate_finder.find.each do |group|
   duplicates_printer.print(group)

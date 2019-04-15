@@ -4,11 +4,10 @@ require 'file_group.rb'
 RSpec.describe DuplicatesFinder do
 
   before(:each) do
-    @options = { directory: 'DIRECTORY' }
     @file_iterator = instance_double('FileIterator')
     @duplicate_file_candidates = instance_double('DuplicateFileCandidates')
     @duplicates_resolver = instance_double('DuplicatesResolver')
-    @duplicate_finder = DuplicatesFinder.new(@options, @file_iterator, @duplicate_file_candidates, @duplicates_resolver)
+    @duplicate_finder = DuplicatesFinder.new(@file_iterator, @duplicate_file_candidates, @duplicates_resolver)
 
     allow(@file_iterator).to receive(:foreach_file)
   end
@@ -23,7 +22,7 @@ RSpec.describe DuplicatesFinder do
     not_duplicates_group = FileGroup.of([file1, file2])
     duplicates_group = FileGroup.of([file3, file4])
 
-    expect(@file_iterator).to receive(:foreach_file).with('DIRECTORY').and_yield(file_to_track)
+    expect(@file_iterator).to receive(:foreach_file).and_yield(file_to_track)
     expect(@duplicate_file_candidates).to receive(:add).with(file_to_track)
     expect(@duplicate_file_candidates).to receive(:candidates).and_return([not_duplicates_group, duplicates_group])
     expect(@duplicates_resolver).to receive(:resolve).with(not_duplicates_group).and_return([])
