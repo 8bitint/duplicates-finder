@@ -7,7 +7,4 @@ class FileInfo
     @size = size
   end
 
-  def to_s
-    "#{path} (#{size} bytes)"
-  end
 end

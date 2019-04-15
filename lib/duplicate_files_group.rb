@@ -17,6 +17,14 @@ class DuplicateFilesGroup
     @files
   end
 
+  def print
+    puts 'Duplicates:'
+
+    @files.each do |fileinfo|
+      puts "\t#{fileinfo.path}"
+    end
+  end
+
   def ==(other)
     @files == other.files
   end
