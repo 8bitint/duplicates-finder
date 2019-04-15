@@ -1,19 +1,19 @@
-require_relative 'file_group'
+require_relative 'same_sized_files_group'
 
 class DuplicateFileCandidates
 
   def initialize
-    @duplicate_candidate_groups = {}
+    @same_sized_file_groups = {}
   end
 
   def add(fileinfo)
-    candidate_group = @duplicate_candidate_groups.fetch(fileinfo.size, FileGroup.new)
-    candidate_group.add(fileinfo)
-    @duplicate_candidate_groups[fileinfo.size] = candidate_group
+    same_sized_files = @same_sized_file_groups.fetch(fileinfo.size, SameSizedFilesGroup.new)
+    same_sized_files.add(fileinfo)
+    @same_sized_file_groups[fileinfo.size] = same_sized_files
   end
 
-  # @return array of file groups
+  # @return array of same same sized files groups
   def candidates
-    @duplicate_candidate_groups.select { |_key, group| group.size > 1 }.values
+    @same_sized_file_groups.select { |_key, group| group.size > 1 }.values
   end
 end

@@ -6,7 +6,7 @@ class FileIterator
     @directory = directory
   end
 
-  def foreach_file
+  def each
     # Don't let glob evaluate base_directory in case of shenanigans
     Dir.chdir(@directory)
     Dir.glob('**/*').each do |path|

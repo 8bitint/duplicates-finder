@@ -5,7 +5,6 @@ class FileInfo
   def initialize(path, size)
     @path = path
     @size = size
-    @digest = nil
   end
 
   def to_s

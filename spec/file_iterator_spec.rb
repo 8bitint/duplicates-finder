@@ -1,4 +1,4 @@
-require 'file_iterator.rb'
+require 'file_iterator'
 
 RSpec.describe FileIterator do
 
@@ -23,7 +23,7 @@ RSpec.describe FileIterator do
     expect(FileTest).to receive(:size).with(@file_path2).and_return(456)
     expect(FileTest).to receive(:size).with(@file_path3).and_return(789)
 
-    FileIterator.new('directory').foreach_file do |_blah|
+    FileIterator.new('directory').each do |_blah|
     end
   end
 end

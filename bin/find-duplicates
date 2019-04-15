@@ -1,11 +1,8 @@
 #!/usr/bin/env ruby
 require_relative '../lib/arguments_parser'
-require_relative '../lib/content_duplication_resolver_strategy'
-require_relative '../lib/digest_duplication_resolver_strategy'
 require_relative '../lib/duplicate_file_candidates'
 require_relative '../lib/duplicates_finder'
 require_relative '../lib/duplicates_printer'
-require_relative '../lib/duplicates_resolver'
 require_relative '../lib/file_iterator'
 
 arguments_parser = ArgumentsParser.new(ARGV)
@@ -15,11 +12,9 @@ if arguments_parser.has_error?
 end
 
 file_iterator = FileIterator.new(arguments_parser.options[:directory])
-duplicates_resolver = DuplicatesResolver.new(ContentDuplicationResolverStrategy.new, DigestDuplicationResolverStrategy.new)
-duplicate_file_candidates = DuplicateFileCandidates.new
-duplicate_finder = DuplicatesFinder.new(file_iterator, duplicate_file_candidates, duplicates_resolver)
+duplicate_finder = DuplicatesFinder.new(file_iterator, DuplicateFileCandidates.new)
 
 duplicates_printer = DuplicatesPrinter.new
-duplicate_finder.find.each do |group|
-  duplicates_printer.print(group)
+duplicate_finder.find.duplicates do |duplicate_files|
+  duplicates_printer.print(duplicate_files)
 end

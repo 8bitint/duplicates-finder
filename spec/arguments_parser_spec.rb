@@ -1,4 +1,4 @@
-require 'arguments_parser.rb'
+require 'arguments_parser'
 
 RSpec.describe ArgumentsParser do
 
