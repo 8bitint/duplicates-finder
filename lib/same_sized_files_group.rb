@@ -38,20 +38,17 @@ class SameSizedFilesGroup
   end
 
   def resolve_by_digest
-    group_by_digest
-        .select {|_key, values| values.size > 1}
-        .values
+    group_by_digest.select {|values| values.size > 1}
   end
 
   def group_by_digest
-    new_groups = {}
+    new_groups = Hash.new {|hash, key| hash[key] = DuplicateFilesGroup.new}
+
     @files.each do |file_info|
       digest = Digest::MD5.file(file_info.path).to_s
-      group = new_groups.fetch(digest, DuplicateFilesGroup.new)
-      group.add(file_info)
-      new_groups[digest] = group
+      new_groups[digest].add(file_info)
     end
-    new_groups
+    new_groups.values
   end
 
 end

@@ -15,10 +15,6 @@ class DuplicatesFinder
       @duplicate_file_candidates.add(fileinfo)
     end
 
-    duplicates_groups = []
-    @duplicate_file_candidates.candidates.each do |same_sized_group|
-      duplicates_groups.push(same_sized_group.duplicates)
-    end
-    duplicates_groups.flatten
+    @duplicate_file_candidates.candidates.flat_map(&:duplicates)
   end
 end

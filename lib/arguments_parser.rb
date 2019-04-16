@@ -5,9 +5,7 @@ class ArgumentsParser
 
   def initialize(args)
     @user_hint = nil
-    @options = {
-        directory: '.'
-    }
+    @options = {directory: '.'}
     parse(args)
   end
 
