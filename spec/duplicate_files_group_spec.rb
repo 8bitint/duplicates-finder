@@ -19,6 +19,13 @@ module Duplicates
       expect(duplicate_files_group.size).to eq(1)
       expect(duplicate_files_group.duplicates).to eq(['file'])
     end
+
+    it 'equality does not care about the order of elements in the group' do
+      group1 = DuplicateFilesGroup.new(['file1', 'file2'])
+      group2 = DuplicateFilesGroup.new(['file2', 'file1'])
+
+      expect(group1).to eq(group2)
+    end
   end
 
 end

@@ -8,6 +8,10 @@ module Duplicates
       @path = path
       @size = size
     end
+
+    def <=>(other)
+      @path <=> other.path
+    end
   end
 
 end

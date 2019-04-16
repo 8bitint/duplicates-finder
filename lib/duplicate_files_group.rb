@@ -28,7 +28,8 @@ module Duplicates
     end
 
     def ==(other)
-      @files == other.files
+      @files.size == other.files.size &&
+          @files.sort == other.files.sort
     end
   end
 
