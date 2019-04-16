@@ -1,35 +1,39 @@
 require 'duplicate_file_candidates'
 
-RSpec.describe DuplicateFileCandidates do
+module Duplicates
 
-  before(:each) do
-    file_info1 = instance_double('FileInfo', size: 123)
-    file_info2 = instance_double('FileInfo', size: 456)
-    file_info3 = instance_double('FileInfo', size: 789)
-    file_info4 = instance_double('FileInfo', size: 456)
-    file_info5 = instance_double('FileInfo', size: 123)
-    file_info6 = instance_double('FileInfo', size: 123)
+  RSpec.describe DuplicateFileCandidates do
 
-    files_with_123_bytes = SameSizedFilesGroup.new
-    files_with_123_bytes.add(file_info1)
-    files_with_123_bytes.add(file_info5)
-    files_with_123_bytes.add(file_info6)
+    before(:each) do
+      file1 = instance_double('File', size: 123)
+      file2 = instance_double('File', size: 456)
+      file3 = instance_double('File', size: 789)
+      file4 = instance_double('File', size: 456)
+      file5 = instance_double('File', size: 123)
+      file6 = instance_double('File', size: 123)
 
-    files_with_456_bytes = SameSizedFilesGroup.new
-    files_with_456_bytes.add(file_info2)
-    files_with_456_bytes.add(file_info4)
+      files_with_123_bytes = SameSizedFilesGroup.new
+      files_with_123_bytes.add(file1)
+      files_with_123_bytes.add(file5)
+      files_with_123_bytes.add(file6)
 
-    @expected_candidates = [files_with_123_bytes, files_with_456_bytes]
+      files_with_456_bytes = SameSizedFilesGroup.new
+      files_with_456_bytes.add(file2)
+      files_with_456_bytes.add(file4)
 
-    @duplicate_file_candidates = DuplicateFileCandidates.new
-    [file_info1, file_info2, file_info3, file_info4, file_info5, file_info6].each do |file_info|
-      @duplicate_file_candidates.add(file_info)
+      @expected_candidates = [files_with_123_bytes, files_with_456_bytes]
+
+      @duplicate_file_candidates = DuplicateFileCandidates.new
+      [file1, file2, file3, file4, file5, file6].each do |file|
+        @duplicate_file_candidates.add(file)
+      end
+    end
+
+    context 'given a list of candidate file groups' do
+      it 'only considers file groups as duplication candidates when it holds more than one file' do
+        expect(@duplicate_file_candidates.candidates).to eq(@expected_candidates)
+      end
     end
   end
 
-  context 'given a list of candidate file groups' do
-    it 'only considers file groups as duplication candidates when it holds more than one file' do
-      expect(@duplicate_file_candidates.candidates).to eq(@expected_candidates)
-    end
-  end
 end

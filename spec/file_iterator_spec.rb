@@ -1,29 +1,32 @@
 require 'file_iterator'
 
-RSpec.describe FileIterator do
+module Duplicates
 
-  before(:each) do
-    @file_path1 = './one/one'
-    @file_path2 = './one/two'
-    @file_path3 = './two/one'
-    @dir_path = 'not-a-file'
+  RSpec.describe FileIterator do
 
-    @paths = [@file_path1, @file_path2, @file_path3, @dir_path]
+    before(:each) do
+      @file_path1 = './one/one'
+      @file_path2 = './one/two'
+      @file_path3 = './two/one'
+      @dir_path = 'not-a-file'
 
-    allow(Dir).to receive(:chdir)
-  end
+      @paths = [@file_path1, @file_path2, @file_path3, @dir_path]
 
-  it 'yields for each file that not a directory' do
-    expect(Dir).to receive(:glob).and_return(@paths)
-    expect(FileTest).to receive(:file?).with(@file_path1).and_return(true)
-    expect(FileTest).to receive(:file?).with(@file_path2).and_return(true)
-    expect(FileTest).to receive(:file?).with(@file_path3).and_return(true)
-    expect(FileTest).to receive(:file?).with(@dir_path).and_return(false)
-    expect(FileTest).to receive(:size).with(@file_path1).and_return(123)
-    expect(FileTest).to receive(:size).with(@file_path2).and_return(456)
-    expect(FileTest).to receive(:size).with(@file_path3).and_return(789)
+      allow(Dir).to receive(:chdir)
+    end
 
-    FileIterator.new('directory').each do |_blah|
+    it 'yields for each file that not a directory' do
+      expect(Dir).to receive(:glob).and_return(@paths)
+      expect(FileTest).to receive(:file?).with(@file_path1).and_return(true)
+      expect(FileTest).to receive(:file?).with(@file_path2).and_return(true)
+      expect(FileTest).to receive(:file?).with(@file_path3).and_return(true)
+      expect(FileTest).to receive(:file?).with(@dir_path).and_return(false)
+      expect(FileTest).to receive(:size).with(@file_path1).and_return(123)
+      expect(FileTest).to receive(:size).with(@file_path2).and_return(456)
+      expect(FileTest).to receive(:size).with(@file_path3).and_return(789)
+
+      FileIterator.new('directory').each {|_|}
     end
   end
+
 end

@@ -4,12 +4,16 @@ require_relative '../lib/duplicate_file_candidates'
 require_relative '../lib/duplicates_finder'
 require_relative '../lib/file_iterator'
 
-arguments_parser = ArgumentsParser.new(ARGV)
-if arguments_parser.has_error?
-  puts arguments_parser.user_hint
-  exit 1
-end
+module Duplicates
 
-file_iterator = FileIterator.new(arguments_parser.options[:directory])
-duplicate_finder = DuplicatesFinder.new(file_iterator, DuplicateFileCandidates.new)
-duplicate_finder.duplicates.each(&:print)
+  arguments_parser = ArgumentsParser.new(ARGV)
+  if arguments_parser.has_error?
+    puts arguments_parser.user_hint
+    exit 1
+  end
+
+  file_iterator = FileIterator.new(arguments_parser.options[:directory])
+  duplicate_finder = DuplicatesFinder.new(file_iterator, DuplicateFileCandidates.new)
+  duplicate_finder.duplicates.each(&:print)
+
+end

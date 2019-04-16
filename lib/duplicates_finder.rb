@@ -2,19 +2,23 @@ require 'digest'
 require_relative 'arguments_parser'
 require_relative 'file_iterator'
 
-class DuplicatesFinder
+module Duplicates
 
-  def initialize(file_iterator, duplicate_file_candidates)
-    @file_iterator = file_iterator
-    @duplicate_file_candidates = duplicate_file_candidates
-  end
+  class DuplicatesFinder
 
-  # @return array of DuplicateFilesGroups
-  def duplicates
-    @file_iterator.each do |fileinfo|
-      @duplicate_file_candidates.add(fileinfo)
+    def initialize(file_iterator, duplicate_file_candidates)
+      @file_iterator = file_iterator
+      @duplicate_file_candidates = duplicate_file_candidates
     end
 
-    @duplicate_file_candidates.candidates.flat_map(&:duplicates)
+    # @return array of DuplicateFilesGroups
+    def duplicates
+      @file_iterator.each do |file|
+        @duplicate_file_candidates.add(file)
+      end
+
+      @duplicate_file_candidates.candidates.flat_map(&:duplicates)
+    end
   end
+
 end

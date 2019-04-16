@@ -1,32 +1,35 @@
-class DuplicateFilesGroup
-  attr_reader :files
+module Duplicates
 
-  def initialize(files = [])
-    @files = files
-  end
+  class DuplicateFilesGroup
+    attr_reader :files
 
-  def add(file)
-    @files.push(file)
-  end
-
-  def size
-    @files.size
-  end
-
-  def duplicates
-    @files
-  end
-
-  def print
-    puts 'Duplicates:'
-
-    @files.each do |fileinfo|
-      puts "\t#{fileinfo.path}"
+    def initialize(files = [])
+      @files = files
     end
-  end
 
-  def ==(other)
-    @files == other.files
+    def add(file)
+      @files.push(file)
+    end
+
+    def size
+      @files.size
+    end
+
+    def duplicates
+      @files
+    end
+
+    def print
+      puts 'Duplicates:'
+
+      @files.each do |file|
+        puts "\t#{file.path}"
+      end
+    end
+
+    def ==(other)
+      @files == other.files
+    end
   end
 
 end
