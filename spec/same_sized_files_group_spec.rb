@@ -1,8 +1,16 @@
 require 'same_sized_files_group'
+require 'file'
 
 module Duplicates
 
   RSpec.describe SameSizedFilesGroup do
+
+    before(:each) do
+      @file1 = Duplicates::File.new('file1', 123)
+      @file2 = Duplicates::File.new('file2', 123)
+      @file3 = Duplicates::File.new('file3', 123)
+      @file4 = Duplicates::File.new('file4', 123)
+    end
 
     context 'given no files' do
       before(:each) do
@@ -35,8 +43,6 @@ module Duplicates
 
     context 'given 2 files that are identical' do
       before(:each) do
-        @file1 = instance_double('File', path: '/one')
-        @file2 = instance_double('File', path: '/two')
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2])
       end
 
@@ -45,7 +51,7 @@ module Duplicates
       end
 
       it 'has 2 duplicates' do
-        expect(FileUtils).to receive(:compare_file).with('/one', '/two').and_return(true)
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file2').and_return(true)
         expected_duplicate_files = DuplicateFilesGroup.new([@file1, @file2])
         expect(@same_sized_files_group.duplicates).to eq([expected_duplicate_files])
       end
@@ -53,11 +59,9 @@ module Duplicates
 
     context 'given 2 files that are not identical' do
       before(:each) do
-        @file1 = instance_double('File', path: '/one')
-        @file2 = instance_double('File', path: '/two')
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2])
 
-        expect(FileUtils).to receive(:compare_file).with('/one', '/two').and_return(false)
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file2').and_return(false)
       end
 
       it 'contains 0 duplicates' do
@@ -67,9 +71,6 @@ module Duplicates
 
     context 'given 3 files that are identical' do
       before(:each) do
-        @file1 = instance_double('File', path: 'file1')
-        @file2 = instance_double('File', path: 'file2')
-        @file3 = instance_double('File', path: 'file3')
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2, @file3])
 
         expect(Digest::MD5).to receive(:file).with('file1').and_return('AAAA')
@@ -85,9 +86,6 @@ module Duplicates
 
     context 'given 3 files, 2 of which are identical' do
       before(:each) do
-        @file1 = instance_double('File', path: 'file1') # digest = BBBB
-        @file2 = instance_double('File', path: 'file2') # digest = CCCC
-        @file3 = instance_double('File', path: 'file3') # digest = BBBB
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2, @file3])
 
         expect(Digest::MD5).to receive(:file).with('file1').and_return('BBBB')
@@ -103,9 +101,6 @@ module Duplicates
 
     context 'given 3 files that are not identical' do
       before(:each) do
-        @file1 = instance_double('File', path: 'file1') # digest = BBBB
-        @file2 = instance_double('File', path: 'file2') # digest = CCCC
-        @file3 = instance_double('File', path: 'file3') # digest = DDDD
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2, @file3])
 
         expect(Digest::MD5).to receive(:file).with('file1').and_return('AAAA')
@@ -120,10 +115,6 @@ module Duplicates
 
     context 'given 4 files that are 2 identical pairs' do
       before(:each) do
-        @file1 = instance_double('File', path: 'file1') # digest = BBBB
-        @file2 = instance_double('File', path: 'file2') # digest = CCCC
-        @file3 = instance_double('File', path: 'file3') # digest = CCCC
-        @file4 = instance_double('File', path: 'file4') # digest = BBBB
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2, @file3, @file4])
 
         expect(Digest::MD5).to receive(:file).with('file1').and_return('BBBB')
