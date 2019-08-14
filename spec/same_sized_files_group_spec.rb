@@ -1,5 +1,4 @@
 require 'same_sized_files_group'
-require 'file'
 
 module Duplicates
 
@@ -73,9 +72,8 @@ module Duplicates
       before(:each) do
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2, @file3])
 
-        expect(Digest::MD5).to receive(:file).with('file1').and_return('AAAA')
-        expect(Digest::MD5).to receive(:file).with('file2').and_return('AAAA')
-        expect(Digest::MD5).to receive(:file).with('file3').and_return('AAAA')
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file2').and_return(true)
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file3').and_return(true)
       end
 
       it 'contains 3 duplicates' do
@@ -88,10 +86,9 @@ module Duplicates
       before(:each) do
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2, @file3])
 
-        expect(Digest::MD5).to receive(:file).with('file1').and_return('BBBB')
-        expect(Digest::MD5).to receive(:file).with('file2').and_return('CCCC')
-        expect(Digest::MD5).to receive(:file).with('file3').and_return('BBBB')
-      end
+      expect(FileUtils).to receive(:compare_file).with('file1', 'file2').and_return(false)
+      expect(FileUtils).to receive(:compare_file).with('file1', 'file3').and_return(true)
+    end
 
       it 'contains 2 duplicates' do
         expected_duplicate_files = DuplicateFilesGroup.new([@file1, @file3])
@@ -103,9 +100,9 @@ module Duplicates
       before(:each) do
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2, @file3])
 
-        expect(Digest::MD5).to receive(:file).with('file1').and_return('AAAA')
-        expect(Digest::MD5).to receive(:file).with('file2').and_return('BBBB')
-        expect(Digest::MD5).to receive(:file).with('file3').and_return('CCCC')
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file2').and_return(false)
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file3').and_return(false)
+        expect(FileUtils).to receive(:compare_file).with('file2', 'file3').and_return(false)
       end
 
       it 'contains 0 duplicates' do
@@ -117,10 +114,10 @@ module Duplicates
       before(:each) do
         @same_sized_files_group = SameSizedFilesGroup.new([@file1, @file2, @file3, @file4])
 
-        expect(Digest::MD5).to receive(:file).with('file1').and_return('BBBB')
-        expect(Digest::MD5).to receive(:file).with('file2').and_return('CCCC')
-        expect(Digest::MD5).to receive(:file).with('file3').and_return('CCCC')
-        expect(Digest::MD5).to receive(:file).with('file4').and_return('BBBB')
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file2').and_return(false)
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file3').and_return(false)
+        expect(FileUtils).to receive(:compare_file).with('file2', 'file3').and_return(true)
+        expect(FileUtils).to receive(:compare_file).with('file1', 'file4').and_return(true)
       end
 
       it 'contains 2 pairs of duplicates' do

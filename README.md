@@ -1,10 +1,11 @@
 # Duplicates Finder
 
-A seeker of duplicate files.
+A seeker of duplicate files and a practical exercise in learning Ruby.
+
 
 ## Installation
 
-A Ruby (2.3 or greater) interpreter is required to run this project. [Bundler](https://bundler.io) is recommended to install gem dependencies.
+A Ruby interpreter is required to run this project. [Bundler](https://bundler.io) is recommended to install gem dependencies.
 
 To install dependencies and run the tests:
 
@@ -41,16 +42,9 @@ Duplicates are identified by performing two passes over the files within the sea
 
 In the first pass, files are grouped by their size. Groups containing two or more files are considered duplication 
 candidates requiring closer inspection in the second pass. Groups that contain only a single file are immediately 
-discounted. 
+discarded. 
 
-In the second pass, if a candidate group contains exactly two files then their contents are compared. In all 
-other cases (i.e., more than two files), a digest is calculated for each file in the group. Although this is considerably 
-slower than byte stream content comparison, it has the advantage of handling any number of duplications using only Ruby's 
-native data structures. In this case, the digest is used as a key into Ruby's native hash map. 
-
-The digest that has been used is MD5. It is statistically unlikely enough to have collisions for the purpose of 
-file de-duplication if the number of file is less than 
-[2^64](https://crypto.stackexchange.com/questions/12677/strength-of-md5-in-finding-duplicate-files).)
+In the second pass, file contents is examined to remove unique files and to separate groups containing multiple duplications with a shared file size.
 
 
 ## License

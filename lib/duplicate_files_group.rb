@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Duplicates
 
   class DuplicateFilesGroup
@@ -15,8 +17,8 @@ module Duplicates
       @files.size
     end
 
-    def duplicates
-      @files
+    def same?(file)
+      @files.empty? ? false : FileUtils.compare_file(@files.first.path, file.path)
     end
 
     def print

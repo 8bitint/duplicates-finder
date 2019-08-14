@@ -1,5 +1,4 @@
 require 'digest'
-require 'fileutils'
 require_relative 'duplicate_files_group'
 require_relative 'same_sized_files_group'
 
@@ -24,33 +23,23 @@ module Duplicates
     def duplicates
       return [] if size < 2
 
-      size == 2 ? resolve_by_content : resolve_by_digest
+      group_by_content.select {|values| values.size > 1}
     end
 
     def ==(other)
       @files == other.files
     end
 
-
     private
 
-    def resolve_by_content
-      same = FileUtils.compare_file(@files.first.path, @files.last.path)
-      same ? [DuplicateFilesGroup.new(@files)] : []
-    end
+    def group_by_content
+      new_groups = [ DuplicateFilesGroup.new([@files.first]) ]
 
-    def resolve_by_digest
-      group_by_digest.select {|values| values.size > 1}
-    end
-
-    def group_by_digest
-      new_groups = Hash.new {|hash, key| hash[key] = DuplicateFilesGroup.new}
-
-      @files.each do |file|
-        digest = Digest::MD5.file(file.path).to_s
-        new_groups[digest].add(file)
+      @files.drop(1).each do |file|
+        matching_group = new_groups.detect {|group| group.same?(file)}
+        matching_group ? matching_group.add(file) : new_groups.push(DuplicateFilesGroup.new([file]))
       end
-      new_groups.values
+      new_groups
     end
   end
 
